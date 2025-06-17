@@ -19,11 +19,8 @@ import java.math.BigInteger;
  * 用于演示如何在 Java 中使用 Web3j 进行以太坊余额查询和 ETH 转账操作。
  */
 public class Transfer {
-
-    // 以太坊节点 URL（请替换为实际使用的测试链或主网节点）
-    private static final String RPC_URL = "https://sepolia.optimism.io"; // 示例：https://sepolia.optimism.io
     // 创建 Web3j 实例，连接到以太坊网络
-    private static final Web3j web3j = Web3j.build(new HttpService(RPC_URL));
+    private static final Web3j web3j = Web3Utils.getWeb3j();
 
     /**
      * 获取指定地址的 ETH 余额（单位为 Ether）。
@@ -92,9 +89,9 @@ public class Transfer {
      */
     public static void main(String[] args) throws Exception {
         // 发送方私钥（请替换为自己的私钥）
-        String privateKey = "YOUR_PRIVATE_KEY";
+        String privateKey = CommonConstant.PRIVATE_KEY;
         // 收款人地址（请替换为自己的测试地址）
-        String recipientAddress = "YOUR_RECIPIENT_ADDRESS";
+        String recipientAddress = CommonConstant.WALLET_ADDRESS;
         // 转账金额（0.001 ETH）
         BigDecimal amountInEther = new BigDecimal("0.001");
 

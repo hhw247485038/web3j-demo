@@ -10,69 +10,69 @@ import java.security.NoSuchProviderException;
 public class Wallet {
 
     /**
-     * Generates a random Ethereum private key.
+     * 生成一个随机的以太坊私钥。
      *
-     * @return A randomly generated private key in hexadecimal format.
-     * @throws InvalidAlgorithmParameterException If the cryptographic algorithm parameters are invalid.
-     * @throws NoSuchAlgorithmException If the cryptographic algorithm is not available.
-     * @throws NoSuchProviderException If the security provider is not available.
+     * @return 返回十六进制格式的随机生成的私钥字符串。
+     * @throws InvalidAlgorithmParameterException 如果加密算法参数无效。
+     * @throws NoSuchAlgorithmException 如果加密算法不可用。
+     * @throws NoSuchProviderException 如果安全提供者不可用。
      */
     public static String createRandomPrivateKey() throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
-        // Generate a random ECKeyPair (contains both private and public keys)
+        // 生成一个随机的 ECKeyPair（包含私钥和公钥）
         ECKeyPair ecKeyPair = Keys.createEcKeyPair();
-        // Return the private key as a hexadecimal string
+        // 将私钥转换为十六进制字符串并返回
         return ecKeyPair.getPrivateKey().toString(CommonConstant.PRIVATE_KEY_RADIX);
     }
 
     /**
-     * Generates an Ethereum wallet address from a given private key.
+     * 根据给定的私钥生成以太坊钱包地址。
      *
-     * @param privateKeyHex The private key in hexadecimal format.
-     * @return The generated Ethereum wallet address (starting with "0x").
+     * @param privateKeyHex 私钥的十六进制格式字符串。
+     * @return 返回带有 "0x" 前缀的以太坊钱包地址。
      */
     public static String getWalletAddressFromPrivateKeyHex(String privateKeyHex) {
-        // Convert the private key from hexadecimal format to BigInteger
+        // 将十六进制格式的私钥转换为 BigInteger 类型
         BigInteger privateKey = new BigInteger(privateKeyHex, CommonConstant.PRIVATE_KEY_RADIX);
-        // Create an ECKeyPair object (contains both private and public keys)
+        // 创建一个 ECKeyPair 对象（包含私钥和公钥）
         ECKeyPair keyPair = ECKeyPair.create(privateKey);
-        // Generate a wallet address from the public key and return it with "0x" prefix
+        // 从公钥中生成钱包地址，并添加 "0x" 前缀后返回
         return CommonConstant.ADDRESS_PREFIX + Keys.getAddress(keyPair.getPublicKey());
     }
 
     /**
-     * Validates whether a given Ethereum wallet address is in a correct format.
+     * 验证给定的以太坊钱包地址是否符合正确的格式。
      *
-     * @param address The Ethereum wallet address (should start with "0x").
-     * @return True if the address is valid, false otherwise.
+     * @param address 钱包地址（应该以 "0x" 开头）。
+     * @return 如果地址有效，返回 true；否则返回 false。
      */
     public static boolean isValidAddress(String address) {
         return WalletUtils.isValidAddress(address);
     }
 
     /**
-     * Validates whether a given private key is valid.
+     * 验证给定的私钥是否有效。
      *
-     * @param privateKey The private key in hexadecimal format.
-     * @return True if the private key is valid, false otherwise.
+     * @param privateKey 私钥的十六进制格式字符串。
+     * @return 如果私钥有效，返回 true；否则返回 false。
      */
     public static boolean isValidPrivateKey(String privateKey) {
         return WalletUtils.isValidPrivateKey(privateKey);
     }
 
     public static void main(String[] args) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
-        // Generate a random private key
+        // 生成一个随机的私钥
         String privateKeyHex = Wallet.createRandomPrivateKey();
 
-        // Generate a wallet address from the private key
+        // 使用私钥生成钱包地址
         String walletAddress = Wallet.getWalletAddressFromPrivateKeyHex(privateKeyHex);
 
-        // Print the generated private key and wallet address
-        System.out.println("The wallet address of [" + privateKeyHex + "] is: [" + walletAddress + "]");
+        // 打印生成的私钥和对应的钱包地址
+        System.out.println("私钥 [" + privateKeyHex + "] 对应的钱包地址是: [" + walletAddress + "]");
 
-        // Validate if the generated wallet address is correct
-        System.out.println("The wallet address [" + walletAddress + "] is " + (Wallet.isValidAddress(walletAddress) ? "valid" : "not valid"));
+        // 验证生成的钱包地址是否有效
+        System.out.println("钱包地址 [" + walletAddress + "] 是 " + (Wallet.isValidAddress(walletAddress) ? "有效的" : "无效的"));
 
-        // Validate if the generated private key is correct
-        System.out.println("The private key [" + privateKeyHex + "] is " + (Wallet.isValidPrivateKey(privateKeyHex) ? "valid" : "not valid"));
+        // 验证生成的私钥是否有效
+        System.out.println("私钥 [" + privateKeyHex + "] 是 " + (Wallet.isValidPrivateKey(privateKeyHex) ? "有效的" : "无效的"));
     }
 }

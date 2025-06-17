@@ -10,11 +10,10 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.EthFilter;
-import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.EthLog;
+import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.http.HttpService;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
@@ -32,15 +31,19 @@ public class EventListener {
 
     /**
      * 监听ERC20代币转账事件（从指定区块开始）
+     *
      * @param contractAddress ERC20合约地址
-     * @param startBlock 起始区块号
+     * @param startBlock      起始区块号
      */
     public void listenTokenTransfers(String contractAddress, BigInteger startBlock) {
         // 定义ERC20 Transfer事件
         Event transferEvent = new Event("Transfer", Arrays.asList(
-                new TypeReference<Address>(true) {},  // from (indexed)
-                new TypeReference<Address>(true) {},  // to (indexed)
-                new TypeReference<Uint256>(false) {}  // value (non-indexed)
+                new TypeReference<Address>(true) {
+                },  // from (indexed)
+                new TypeReference<Address>(true) {
+                },  // to (indexed)
+                new TypeReference<Uint256>(false) {
+                }  // value (non-indexed)
         ));
 
         EthFilter filter = new EthFilter(
@@ -59,15 +62,19 @@ public class EventListener {
 
     /**
      * 回放指定区块范围的历史交易
+     *
      * @param contractAddress 合约地址
-     * @param fromBlock 起始区块
-     * @param toBlock 结束区块
+     * @param fromBlock       起始区块
+     * @param toBlock         结束区块
      */
     public void replayPastTransactions(String contractAddress, BigInteger fromBlock, BigInteger toBlock) {
         Event transferEvent = new Event("Transfer", Arrays.asList(
-                new TypeReference<Address>(true) {},
-                new TypeReference<Address>(true) {},
-                new TypeReference<Uint256>(false) {}
+                new TypeReference<Address>(true) {
+                },
+                new TypeReference<Address>(true) {
+                },
+                new TypeReference<Uint256>(false) {
+                }
         ));
 
         EthFilter filter = new EthFilter(
@@ -89,13 +96,17 @@ public class EventListener {
 
     /**
      * 监听未来发生的交易（从当前区块开始）
+     *
      * @param contractAddress 监听的合约地址
      */
     public void listenFutureTransactions(String contractAddress) {
         Event transferEvent = new Event("Transfer", Arrays.asList(
-                new TypeReference<Address>(true) {},
-                new TypeReference<Address>(true) {},
-                new TypeReference<Uint256>(false) {}
+                new TypeReference<Address>(true) {
+                },
+                new TypeReference<Address>(true) {
+                },
+                new TypeReference<Uint256>(false) {
+                }
         ));
 
         EthFilter filter = new EthFilter(
@@ -114,10 +125,11 @@ public class EventListener {
 
     /**
      * 处理Transfer事件逻辑
-     * @param log 区块链日志
+     *
+     * @param log             区块链日志
      * @param contractAddress 合约地址（用于日志区分）
      */
-    private void processTransferEvent(Log log, String contractAddress,Event event) {
+    private void processTransferEvent(Log log, String contractAddress, Event event) {
         if (log.getData() == null || log.getData().equals("0x")) {
             System.err.println("Empty log data for contract " + contractAddress);
             return;
@@ -145,10 +157,10 @@ public class EventListener {
         listener.listenTokenTransfers(CONTRACT_ADDRESS, BigInteger.ZERO);
 
         // 2. 重放历史交易（区块1000000-1100000）
-         listener.replayPastTransactions(CONTRACT_ADDRESS, BigInteger.valueOf(0), BigInteger.valueOf(400));
+        listener.replayPastTransactions(CONTRACT_ADDRESS, BigInteger.valueOf(0), BigInteger.valueOf(400));
 
         // 3. 监听未来交易
-         listener.listenFutureTransactions(CONTRACT_ADDRESS);
+        listener.listenFutureTransactions(CONTRACT_ADDRESS);
 
         System.out.println("Listening...");
     }

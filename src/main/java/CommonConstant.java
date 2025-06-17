@@ -12,4 +12,5 @@ public class CommonConstant {
     public static final String PROJECT_ID = "d7c3eb371940423c950825647de0c155";
     public static final String PRIVATE_KEY = "d73eb0b59228b2f61d4f2a16e446d1ad298bff9bdc7b8ac32bab007a0c4ae55b";
     public static final String CONTRACT_ADDRESS = "0x833C27F4BFB4c1Eea93c747C3f5ECcf060c1B79d";
+    public static final String WALLET_ADDRESS = "0x2babDFCC940247462dc83e3D67735F21Aa0ECa64";
 }
