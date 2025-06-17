@@ -25,7 +25,7 @@ import java.util.List;
 public class EventListener {
 
     // 测试合约地址（示例）
-    private static final String CONTRACT_ADDRESS = "0xB6b0ab2e6205212FD2A4017bD0A4710b11EA55eb";
+    private static final String CONTRACT_ADDRESS = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
 
     public Subscription ethMissSubscription; //ETH交易空档事件订阅对象
 
