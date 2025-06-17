@@ -1,4 +1,5 @@
 import io.reactivex.Flowable;
+import org.reactivestreams.Subscription;
 import org.web3j.abi.EventEncoder;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.TypeReference;
@@ -24,8 +25,11 @@ import java.util.List;
 public class EventListener {
 
     // 测试合约地址（示例）
-    private static final String CONTRACT_ADDRESS = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
+    private static final String CONTRACT_ADDRESS = "0xB6b0ab2e6205212FD2A4017bD0A4710b11EA55eb";
 
+    public Subscription ethMissSubscription; //ETH交易空档事件订阅对象
+
+    public Subscription ethSubscription;     //ETH交易事件订阅对象
     // 以太坊节点服务
     private static final Web3j web3j = Web3j.build(new HttpService("https://opt-sepolia.g.alchemy.com/v2/tow91YQzp06m0yzJ8nQ_pa6gVokpKCk5"));
 
@@ -138,6 +142,8 @@ public class EventListener {
         // 提取indexed参数
         String from = "0x" + log.getTopics().get(1).substring(26);
         String to = "0x" + log.getTopics().get(2).substring(26);
+        System.out.println(log);
+        System.out.printf("Contract %s: Transfer from %s to %s%n", contractAddress, from, to);
 
         // 解析非indexed参数
         List<Type> decoded = FunctionReturnDecoder.decode(log.getData(), event.getNonIndexedParameters());
